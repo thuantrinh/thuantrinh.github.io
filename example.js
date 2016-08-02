@@ -28,7 +28,7 @@ var ExampleApplication = React.createClass({
         return (
             <div>
 
-                <h1>Enter Multiplication table</h1>
+                <h1>Which Multiplication Table You Want To Test against?</h1>
 
                 <form>
                     <input style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
