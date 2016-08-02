@@ -45,12 +45,9 @@ var ExampleApplication = React.createClass({
     getQuestionPage: function() {
         const self = this;
         var random = Math.floor((Math.random() * this.state.questions.length) + 0);
-        console.log('random ',random);
 
         var extractedQuestion = this.state.questions[random];
 
-
-        //style={{display: 'flex',justifyContent: 'space-between'}
         return (
             <div>
                 <h1>Answer The question</h1>
@@ -84,12 +81,9 @@ var ExampleApplication = React.createClass({
         
         for (var answerIndex = 0; answerIndex < answers.length; answerIndex++){
             var answer = answers[answerIndex]
-            console.log(answer.userAnswer, answer.answer);
-            console.log();
-            if (answer.userAnswer !== answer.answer.toString()) {
+            if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
                 errorStyle = {color: 'red'}
             }
-            console.log(errorStyle);
             answerList.push(<li key={answerIndex} style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
 
@@ -103,7 +97,7 @@ var ExampleApplication = React.createClass({
     getQuestions: function(input){
         var questions = [];
 
-        for (var multiplicand = 0; multiplicand < input; multiplicand++ ){
+        for (var multiplicand = 1; multiplicand < input; multiplicand++ ){
             for (var multiplier = 0; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
@@ -132,8 +126,6 @@ var ExampleApplication = React.createClass({
         this.state.currentAnswer =  event.target.value
     },
     onUserAnswertSubmit: function(extractedQuestion, event){
-        console.log('onUserAnswertSubmit state', this.state)
-
         var answers = this.state.answers.slice()
         answers.push({
             multiplicand: extractedQuestion.multiplicand,
@@ -142,8 +134,6 @@ var ExampleApplication = React.createClass({
             answer: extractedQuestion.answer
         })
         this.setState({ answers: answers })
-
-        console.log('onUserAnswertSubmit state2', this.state)
     },
     onUserAnswertEnd: function(event){
         this.setState({
@@ -153,7 +143,6 @@ var ExampleApplication = React.createClass({
         });
     },
     render: function() {
-        console.log('state1', this.state);
         return (
             <div style={{width: window.innerWidth}}>
                 { this.state.showUserDesiredTable ? this.getUserDesiredTable(): null }
