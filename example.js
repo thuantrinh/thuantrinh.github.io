@@ -17,7 +17,7 @@ var ExampleApplication = React.createClass({
                 backgroundColor: 'white',
                 fontSize: '2em',
                 fontW: 'bold',
-                padding: '6px 24px',
+                padding: '1em 1em',
                 textDecoration: 'none',
                 textShadow:'0px 1px 0px #ffffff'
             }
@@ -62,7 +62,7 @@ var ExampleApplication = React.createClass({
                         <br></br>
 
                         <div>
-                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Submit</button>
+                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
                             <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                         </div>
                     </form>
