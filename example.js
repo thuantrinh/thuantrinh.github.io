@@ -83,6 +83,8 @@ var ExampleApplication = React.createClass({
             var answer = answers[answerIndex]
             if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
                 errorStyle = {color: 'red'}
+            } else {
+                errorStyle = null;
             }
             answerList.push(<li key={answerIndex} style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
