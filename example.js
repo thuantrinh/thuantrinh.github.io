@@ -47,24 +47,43 @@ var ExampleApplication = React.createClass({
         var random = Math.floor((Math.random() * this.state.questions.length) + 0);
 
         var extractedQuestion = this.state.questions[random];
+        //
+        var questionBlock;
+
+        if (this.state.questions.length > 0){
+            questionBlock = (
+                <div>
+                    <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
+                    <form>
+                        <input style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} onChange={self.onUserAnswertChange.bind(this, extractedQuestion)} />
+
+                        <br></br>
+                        <br></br>
+                        <br></br>
+
+                        <div>
+                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Submit</button>
+                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                        </div>
+                    </form>
+                </div>
+            )
+        } else {
+            questionBlock = (
+                <div>
+                    <form>
+                        <div>
+                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                        </div>
+                    </form>
+                </div>
+            )
+        }
 
         return (
             <div>
                 <h1>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h1>
-
-                <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
-                <form>
-                    <input style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} onChange={self.onUserAnswertChange.bind(this, extractedQuestion)} />
-
-                    <br></br>
-                    <br></br>
-                    <br></br>
-
-                    <div>
-                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Submit</button>
-                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
-                    </div>
-                </form>
+                {questionBlock}
             </div>
         );
     },
