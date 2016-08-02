@@ -31,7 +31,7 @@ var ExampleApplication = React.createClass({
                 <h1>Enter Multiplication table</h1>
 
                 <form>
-                    <input style={{height: '1em',fontSize: '7em', border: '1px solid black'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
+                    <input style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
                     <br></br>
                     <br></br>
                     <br></br>
@@ -50,18 +50,18 @@ var ExampleApplication = React.createClass({
 
         return (
             <div>
-                <h1>Answer The question</h1>
+                <h1>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h1>
 
                 <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
                 <form>
-                    <input style={{height: '1em',fontSize: '7em', border: '1px solid black'}} type="number" min='1' max='2' key={new Date().getTime()} onChange={self.onUserAnswertChange.bind(this, extractedQuestion)} />
+                    <input style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} onChange={self.onUserAnswertChange.bind(this, extractedQuestion)} />
 
                     <br></br>
                     <br></br>
                     <br></br>
 
                     <div>
-                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion)}> Submit</button>
+                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Submit</button>
                         <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                     </div>
                 </form>
@@ -72,9 +72,6 @@ var ExampleApplication = React.createClass({
         const self = this;
 
         var answerList = []
-
-        //answerList.push(<label>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </label>)
-
         var answers = self.state.answers;
         var errorStyle;
         
@@ -100,7 +97,7 @@ var ExampleApplication = React.createClass({
         var questions = [];
 
         for (var multiplicand = 1; multiplicand < input; multiplicand++ ){
-            for (var multiplier = 0; multiplier < 11; multiplier++){
+            for (var multiplier = 1; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
                     multiplier: multiplier,
@@ -127,7 +124,9 @@ var ExampleApplication = React.createClass({
     onUserAnswertChange: function(extractedQuestion, event){
         this.state.currentAnswer =  event.target.value
     },
-    onUserAnswertSubmit: function(extractedQuestion, event){
+    onUserAnswertSubmit: function(extractedQuestion, random, event){
+
+        this.state.questions.splice(random, 1)
         var answers = this.state.answers.slice()
         answers.push({
             multiplicand: extractedQuestion.multiplicand,
