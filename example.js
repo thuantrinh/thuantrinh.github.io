@@ -1,6 +1,7 @@
 var MultiplicationHelper = React.createClass({
     getInitialState: function() {
         return {
+            questionCounter: 1,
             totalQustionsCount: 0,
             userDesiredTable: 1,
             showUserDesiredTable: true,
