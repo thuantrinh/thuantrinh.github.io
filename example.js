@@ -1,7 +1,7 @@
-var ExampleApplication = React.createClass({
+var MultiplicationHelper = React.createClass({
     getInitialState: function() {
         return {
-            questionCounter: 1,
+            totalQustionsCount: 0,
             userDesiredTable: 1,
             showUserDesiredTable: true,
             showQuestion: false,
@@ -26,17 +26,12 @@ var ExampleApplication = React.createClass({
         const self = this;
         return (
             <div>
-
                 <h1>Which Multiplication Table You Want To Test against?</h1>
-
-                <form onSubmit={self.preventFormSubmit}>
-                    <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <button style={self.state.buttonStyles} type="button" onClick={self.onUserDesiredTableInputSubmit}> Submit</button>
-                </form>
-
+                <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
+                <br></br>
+                <br></br>
+                <br></br>
+                <button style={self.state.buttonStyles} type="button" onClick={self.onUserDesiredTableInputSubmit}> Submit</button>
             </div>
         );
     },
@@ -53,32 +48,25 @@ var ExampleApplication = React.createClass({
             questionBlock = (
                 <div>
                     <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
-                    <form onSubmit={self.preventFormSubmit}>
-                        <input ref='userAnswerInput' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} />
+                    <input ref='userAnswerInput' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} />
 
-                        <br></br>
-                        <br></br>
-                        <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
 
-                        <div>
-                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
-                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
-                        </div>
-                    </form>
+                    <div>
+                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
+                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                    </div>
                 </div>
             )
         } else {
             questionBlock = (
                 <div>
-                    <form onSubmit={self.preventFormSubmit}>
-                        <div>
-                            <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
-                        </div>
-                    </form>
+                    <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                 </div>
             )
         }
-
         return (
             <div>
                 <h1>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h1>
@@ -92,21 +80,24 @@ var ExampleApplication = React.createClass({
         var answerList = []
         var answers = self.state.answers;
         var errorStyle;
-        
+        var errorCount = 0;
         
         for (var answerIndex = 0; answerIndex < answers.length; answerIndex++){
             var answer = answers[answerIndex]
             if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
                 errorStyle = {paddingLeft: '2%', color: 'red'}
+                errorCount++;
             } else {
                 errorStyle = {paddingLeft: '2%'};
             }
             answerList.push(<li key={answerIndex} style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
 
+        var results = (answerList.length - errorCount) / answerList.length * 100
+
         return (
             <div>
-                <h1>Results</h1>
+                <h1>Results: {results}%    ( {errorCount} incorrect out of {answerList.length} )</h1>
                 <ol type='1' style={{fontSize: '2em'}}>{answerList}</ol>
             </div>
         );
@@ -123,14 +114,16 @@ var ExampleApplication = React.createClass({
                 });
             }
         }
-
         return questions;
     },
     onUserDesiredTableInputChange: function(event){
 
+        var questions = this.getQuestions((parseInt(event.target.value) + 1));
+
         this.setState({
             userDesiredTable: (parseInt(event.target.value) + 1),
-            questions: this.getQuestions((parseInt(event.target.value) + 1))
+            questions: questions,
+            totalQustionsCount: questions.length
         });
     },
     onUserDesiredTableInputSubmit: function(){
@@ -158,9 +151,6 @@ var ExampleApplication = React.createClass({
             )
         }
     },
-    preventFormSubmit: function(event){
-        event.preventDefault();
-    },
     onUserAnswertEnd: function(event){
         this.setState({
             showUserDesiredTable: false,
@@ -182,7 +172,6 @@ var ExampleApplication = React.createClass({
 });
 
 ReactDOM.render(
-
-    <ExampleApplication/>,
+    <MultiplicationHelper/>,
     document.getElementById('container')
 );
