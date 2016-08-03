@@ -28,6 +28,7 @@ var MultiplicationHelper = React.createClass({
         return (
             <div>
                 <h1>Which Multiplication Table You Want To Test against?</h1>
+                <h2>Insert a number from 1 - 10 for 2nd grade</h2>
                 <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
                 <br></br>
                 <br></br>
