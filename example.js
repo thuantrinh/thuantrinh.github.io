@@ -153,7 +153,11 @@ var ExampleApplication = React.createClass({
             userAnswer: this.state.currentAnswer,
             answer: extractedQuestion.answer
         })
-        this.setState({ answers: answers })
+        this.setState({
+            answers: answers,
+            questionCounter: parseInt(this.state.questionCounter) + 1
+            }
+        )
     },
     onUserAnswertEnd: function(event){
         this.setState({
