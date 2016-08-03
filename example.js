@@ -108,7 +108,7 @@ var ExampleApplication = React.createClass({
         return (
             <div>
                 <h1>Results</h1>
-                <ul>{answerList}</ul>
+                <ul style={{fontSize: '2em'}}>{answerList}</ul>
             </div>
         );
     },
