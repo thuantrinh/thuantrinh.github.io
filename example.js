@@ -29,7 +29,7 @@ var MultiplicationHelper = React.createClass({
             <div>
                 <h1>Which Multiplication Table You Want To Test against?</h1>
                 <h2>Insert a number from 1 - 10 for 2nd grade</h2>
-                <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
+                <input ref='userDesiredMultiplicationTable' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
                 <br></br>
                 <br></br>
                 <br></br>
@@ -95,7 +95,7 @@ var MultiplicationHelper = React.createClass({
             answerList.push(<li key={answerIndex} style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
 
-        var results = (answerList.length - errorCount) / answerList.length * 100
+        var results = Math.round((answerList.length - errorCount) / answerList.length * 100)
 
         return (
             <div>
@@ -119,7 +119,6 @@ var MultiplicationHelper = React.createClass({
         return questions;
     },
     onUserDesiredTableInputChange: function(event){
-
         var questions = this.getQuestions((parseInt(event.target.value) + 1));
 
         this.setState({
@@ -129,10 +128,14 @@ var MultiplicationHelper = React.createClass({
         });
     },
     onUserDesiredTableInputSubmit: function(){
-        this.setState({
-            showUserDesiredTable: false,
-            showQuestion: true
-        });
+        var userDesiredMultiplicationTable = ReactDOM.findDOMNode(this.refs.userDesiredMultiplicationTable).value;
+
+        if (userDesiredMultiplicationTable !== ''){
+            this.setState({
+                showUserDesiredTable: false,
+                showQuestion: true
+            });
+        }
     },
     onUserAnswertSubmit: function(extractedQuestion, random, event){
         var currentAnswer = ReactDOM.findDOMNode(this.refs.userAnswerInput).value;
