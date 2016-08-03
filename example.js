@@ -8,7 +8,6 @@ var ExampleApplication = React.createClass({
             showResults: false,
             questions: this.getQuestions(1),
             answers: [],
-            currentAnswer: null,
             buttonStyles: {
                 borderRadius: '6px',
                 border: '1px solid black',
@@ -30,7 +29,7 @@ var ExampleApplication = React.createClass({
 
                 <h1>Which Multiplication Table You Want To Test against?</h1>
 
-                <form>
+                <form onSubmit={self.preventFormSubmit}>
                     <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
                     <br></br>
                     <br></br>
@@ -54,8 +53,8 @@ var ExampleApplication = React.createClass({
             questionBlock = (
                 <div>
                     <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
-                    <form>
-                        <input pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} onChange={self.onUserAnswertChange.bind(this, extractedQuestion)} />
+                    <form onSubmit={self.preventFormSubmit}>
+                        <input ref='userAnswerInput' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} />
 
                         <br></br>
                         <br></br>
@@ -71,7 +70,7 @@ var ExampleApplication = React.createClass({
         } else {
             questionBlock = (
                 <div>
-                    <form>
+                    <form onSubmit={self.preventFormSubmit}>
                         <div>
                             <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                         </div>
@@ -98,17 +97,17 @@ var ExampleApplication = React.createClass({
         for (var answerIndex = 0; answerIndex < answers.length; answerIndex++){
             var answer = answers[answerIndex]
             if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
-                errorStyle = {color: 'red'}
+                errorStyle = {paddingLeft: '2%', color: 'red'}
             } else {
-                errorStyle = null;
+                errorStyle = {paddingLeft: '2%'};
             }
-            answerList.push(<li key={answerIndex} style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
+            answerList.push(<li key={answerIndex} style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
 
         return (
             <div>
                 <h1>Results</h1>
-                <ul style={{fontSize: '2em'}}>{answerList}</ul>
+                <ol type='1' style={{fontSize: '2em'}}>{answerList}</ol>
             </div>
         );
     },
@@ -140,24 +139,27 @@ var ExampleApplication = React.createClass({
             showQuestion: true
         });
     },
-    onUserAnswertChange: function(extractedQuestion, event){
-        this.state.currentAnswer =  event.target.value
-    },
     onUserAnswertSubmit: function(extractedQuestion, random, event){
+        var currentAnswer = ReactDOM.findDOMNode(this.refs.userAnswerInput).value;
 
-        this.state.questions.splice(random, 1)
-        var answers = this.state.answers.slice()
-        answers.push({
-            multiplicand: extractedQuestion.multiplicand,
-            multiplier: extractedQuestion.multiplier,
-            userAnswer: this.state.currentAnswer,
-            answer: extractedQuestion.answer
-        })
-        this.setState({
-            answers: answers,
-            questionCounter: parseInt(this.state.questionCounter) + 1
-            }
-        )
+        if (currentAnswer !== ''){
+            this.state.questions.splice(random, 1)
+            var answers = this.state.answers.slice()
+            answers.push({
+                multiplicand: extractedQuestion.multiplicand,
+                multiplier: extractedQuestion.multiplier,
+                userAnswer: parseInt(ReactDOM.findDOMNode(this.refs.userAnswerInput).value),
+                answer: extractedQuestion.answer
+            })
+            this.setState({
+                    answers: answers,
+                    questionCounter: parseInt(this.state.questionCounter) + 1
+                }
+            )
+        }
+    },
+    preventFormSubmit: function(event){
+        event.preventDefault();
     },
     onUserAnswertEnd: function(event){
         this.setState({
