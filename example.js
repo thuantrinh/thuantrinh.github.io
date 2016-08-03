@@ -165,7 +165,7 @@ var MultiplicationHelper = React.createClass({
     },
     render: function() {
         return (
-            <div style={{width: window.innerWidth}}>
+            <div style={{width: window.innerWidth, padding: '1em'}}>
                 { this.state.showUserDesiredTable ? this.getUserDesiredTable(): null }
 
                 { this.state.showQuestion ? this.getQuestionPage(): null }
