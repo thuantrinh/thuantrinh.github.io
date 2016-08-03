@@ -107,7 +107,7 @@ var MultiplicationHelper = React.createClass({
     getQuestions: function(input){
         var questions = [];
 
-        for (var multiplicand = 1; multiplicand < input; multiplicand++ ){
+        for (var multiplicand = 2; multiplicand < input; multiplicand++ ){
             for (var multiplier = 1; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
