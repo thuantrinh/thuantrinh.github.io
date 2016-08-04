@@ -92,22 +92,22 @@ var MultiplicationHelper = React.createClass({
             } else {
                 errorStyle = {paddingLeft: '2%'};
             }
-            answerList.push(<li key={answerIndex} style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
+            answerList.push(<li key={answerIndex} style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
         }
 
         var results = Math.round((answerList.length - errorCount) / answerList.length * 100)
 
         return (
             <div>
-                <h1>Results: {results}%    ( {errorCount} incorrect out of {answerList.length} )</h1>
-                <ol type='1' style={{fontSize: '2em'}}>{answerList}</ol>
+                <h1>Results</h1>
+                <ul>{answerList}</ul>
             </div>
         );
     },
     getQuestions: function(input){
         var questions = [];
 
-        for (var multiplicand = 2; multiplicand < input; multiplicand++ ){
+        for (var multiplicand = 1; multiplicand < input; multiplicand++ ){
             for (var multiplier = 1; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
