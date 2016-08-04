@@ -73,12 +73,12 @@ var MultiplicationHelper = React.createClass({
         for (var answerIndex = 0; answerIndex < answers.length; answerIndex++){
             var answer = answers[answerIndex]
             if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
-                errorStyle = {paddingLeft: '3%', color: 'red'}
+                errorStyle = {paddingLeft: '5%', color: 'red'}
                 errorCount++;
             } else {
-                errorStyle = {paddingLeft: '3%'};
+                errorStyle = {paddingLeft: '5%'};
             }
-            answerList.push(<li key={answerIndex}> <span style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer}</span> </li>)
+            answerList.push(<li style={{fontSize: '2em'}} key={answerIndex}> <span style={errorStyle}>{answer.multiplicand} x {answer.multiplier} = {answer.userAnswer}</span> </li>)
         }
 
         var results = Math.round((answerList.length - errorCount) / answerList.length * 100)
