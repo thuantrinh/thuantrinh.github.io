@@ -10,16 +10,9 @@ var MultiplicationHelper = React.createClass({
             questions: this.getQuestions(1),
             answers: [],
             buttonStyles: {
-                borderRadius: '6px',
-                border: '1px solid black',
-                display: 'inline-block',
-                color: 'black',
-                backgroundColor: 'white',
                 fontSize: '2em',
-                fontW: 'bold',
-                padding: '1em 1em',
-                textDecoration: 'none',
-                textShadow:'0px 1px 0px #ffffff'
+                height: '3em',
+                padding: '0 1em'
             }
         };
     },
@@ -27,13 +20,11 @@ var MultiplicationHelper = React.createClass({
         const self = this;
         return (
             <div>
-                <h1>Which Multiplication Table You Want To Test against?</h1>
-                <h2>Insert a number from 1 - 10 for 2nd grade</h2>
-                <input ref='userDesiredMultiplicationTable' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='100'  onChange={self.onUserDesiredTableInputChange} />
+                <h4>Which Multiplication Table You Want To Test against?</h4>
+                <h5>Insert a number from 1 - 10 for 2nd grade</h5>
+                <input ref='userDesiredMultiplicationTable' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min="1" max="3"  onChange={self.onUserDesiredTableInputChange} />
                 <br></br>
-                <br></br>
-                <br></br>
-                <button style={self.state.buttonStyles} type="button" onClick={self.onUserDesiredTableInputSubmit}> Submit</button>
+                <button  type="button" style={self.state.buttonStyles} onClick={self.onUserDesiredTableInputSubmit}> Submit</button>
             </div>
         );
     },
@@ -43,22 +34,17 @@ var MultiplicationHelper = React.createClass({
         var random = Math.floor((Math.random() * this.state.questions.length) + 0);
 
         var extractedQuestion = this.state.questions[random];
-        //
         var questionBlock;
 
         if (this.state.questions.length > 0){
             questionBlock = (
                 <div>
                     <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
-                    <input ref='userAnswerInput' pattern="\d*" style={{height: '1em',fontSize: '7em', border: '1px solid black', width: '30%'}} type="number" min='1' max='2' key={new Date().getTime()} />
-
+                    <input ref='userAnswerInput' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min='1' max='2' key={new Date().getTime()} />
                     <br></br>
-                    <br></br>
-                    <br></br>
-
                     <div>
-                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
-                        <button style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                        <button className="five columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
+                        <button className="four columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                     </div>
                 </div>
             )
@@ -71,7 +57,7 @@ var MultiplicationHelper = React.createClass({
         }
         return (
             <div>
-                <h1>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h1>
+                <h4>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h4>
                 {questionBlock}
             </div>
         );
@@ -99,7 +85,7 @@ var MultiplicationHelper = React.createClass({
 
         return (
             <div>
-                <h1>Results</h1>
+                <h4>Results</h4>
                 <ul>{answerList}</ul>
             </div>
         );
@@ -107,7 +93,7 @@ var MultiplicationHelper = React.createClass({
     getQuestions: function(input){
         var questions = [];
 
-        for (var multiplicand = 1; multiplicand < input; multiplicand++ ){
+        for (var multiplicand = 2; multiplicand < input; multiplicand++ ){
             for (var multiplier = 1; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
@@ -165,7 +151,7 @@ var MultiplicationHelper = React.createClass({
     },
     render: function() {
         return (
-            <div style={{width: window.innerWidth, padding: '1em'}}>
+            <div >
                 { this.state.showUserDesiredTable ? this.getUserDesiredTable(): null }
 
                 { this.state.showQuestion ? this.getQuestionPage(): null }
@@ -178,5 +164,5 @@ var MultiplicationHelper = React.createClass({
 
 ReactDOM.render(
     <MultiplicationHelper/>,
-    document.getElementById('container')
+    document.getElementById('multiplicationApp')
 );
