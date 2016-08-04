@@ -102,7 +102,7 @@ var ExampleApplication = React.createClass({
             } else {
                 errorStyle = null;
             }
-            answerList.push(<li key={answerIndex} style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </li>)
+            answerList.push(<li key={answerIndex}> <span style={errorStyle}> {answer.multiplicand} x {answer.multiplier} = {answer.userAnswer} </span></li>)
         }
 
         return (
