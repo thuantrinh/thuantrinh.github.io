@@ -54,7 +54,7 @@ var MultiplicationHelper = React.createClass({
         return (
             <div>
                 <div>
-                    <h4 style={{textAlign: 'center'}}>GENERATION QUESTIONSs</h4>
+                    <h4 style={{textAlign: 'center'}}>GENERATE QUESTIONS</h4>
                     <h5 style={{textAlign: 'center'}}>Please select a range of times table to generate the multiplication questions</h5>
                 <span>
                     <h5 className="two columns">From:&nbsp;&nbsp;&nbsp;</h5>
