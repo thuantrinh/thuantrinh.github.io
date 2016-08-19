@@ -53,8 +53,8 @@ var MultiplicationHelper = React.createClass({
         return (
             <div>
                 <div>
-                    <h4>GENERATION QUESTIONSs</h4>
-                    <h5>Please select a range of times table to generate the multiplication questions</h5>
+                    <h4 style={{textAlign: 'center'}}>GENERATION QUESTIONSs</h4>
+                    <h5 style={{textAlign: 'center'}}>Please select a range of times table to generate the multiplication questions</h5>
                 <span>
                     <h5 className="two columns">From:&nbsp;&nbsp;&nbsp;</h5>
                     <select ref="fromDropdown" className="three columns" onChange={self.onUserDesiredTableInputChange}>
@@ -107,7 +107,7 @@ var MultiplicationHelper = React.createClass({
         if (this.state.questions.length > 0){
             questionBlock = (
                 <div>
-                    <div style={{fontSize: '7em'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
+                    <div style={{fontSize: '7em', textAlign: 'center'}}>{'' + extractedQuestion.multiplicand + ' x ' +  extractedQuestion.multiplier + ' = '}</div>
                     <input ref='userAnswerInput' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min='1' max='2' key={new Date().getTime()} />
                     <br></br>
                     <div>
@@ -125,7 +125,7 @@ var MultiplicationHelper = React.createClass({
         }
         return (
             <div>
-                <h4>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h4>
+                <h4 style={{textAlign: 'center'}}>Question# {this.state.questionCounter}  ({this.state.questions.length} questions remaining)</h4>
                 {questionBlock}
             </div>
         );
