@@ -7,6 +7,7 @@ var MultiplicationHelper = React.createClass({
             showUserDesiredTable: true,
             showQuestion: false,
             showResults: false,
+            showConfirmationModal: false,
             questions: this.getQuestions(2, 9),
             answers: [],
             buttonStyles: {
@@ -16,6 +17,28 @@ var MultiplicationHelper = React.createClass({
             }
         };
     },
+    closeConfirmationModal: function() {
+        this.setState({
+            showConfirmationModal: false
+        });
+    },
+    showConfirmationModal: function() {
+        this.setState({
+            showConfirmationModal: true
+        });
+    },
+    getConfirmationModal: function() {
+        const self = this;
+        return (
+            <div id="myModal" className="twelve columns modal">
+                <div className="ten columns offset-by-one modal-content">
+                    <h5 style={{textAlign: 'center'}} className="ten columns offset-by-one">Are you sure you want to end the test?</h5>
+                    <button className="ten columns offset-by-one" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> Yes</button>
+                    <button className="ten columns offset-by-one" style={self.state.buttonStyles} type="button" onClick={self.closeConfirmationModal}> No</button>
+                </div>
+            </div>
+        )
+    },
     getUserDesiredTable: function() {
         const self = this;
 
@@ -24,21 +47,14 @@ var MultiplicationHelper = React.createClass({
 
         for (var questionIndex = 0; questionIndex < questions.length; questionIndex++){
             var question = questions[questionIndex]
-
-
-            //if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
-            //    errorStyle = {paddingLeft: '5%', color: 'red'}
-            //    errorCount++;
-            //} else {
-            //    errorStyle = {paddingLeft: '5%'};
-            //}
             questionsList.push(<li style={{fontSize: '2em'}} key={questionIndex}> <span style={{paddingLeft: '5%'}}>{question.multiplicand} x {question.multiplier} = {question.answer}</span> </li>)
         }
 
         return (
             <div>
-                <h4>GENERATION QUESTIONSs</h4>
-                <h5>Please select a range of times table to generate the multiplication questions</h5>
+                <div>
+                    <h4>GENERATION QUESTIONSs</h4>
+                    <h5>Please select a range of times table to generate the multiplication questions</h5>
                 <span>
                     <h5 className="two columns">From:&nbsp;&nbsp;&nbsp;</h5>
                     <select ref="fromDropdown" className="three columns" onChange={self.onUserDesiredTableInputChange}>
@@ -70,12 +86,13 @@ var MultiplicationHelper = React.createClass({
                         <option value="10">10</option>
                     </select>
                 </span>
-                <button className="twelve columns" type="button" style={self.state.buttonStyles} onClick={self.onUserDesiredTableInputSubmit}> GO</button>
-                <br></br>
-                <h5 className="twelve columns" style={{paddingTop: '1em'}}>The following questions will be asked (in random order)</h5>
-                <ul className="twelve columns">
-                    {questionsList}
-                </ul>
+                    <button className="twelve columns" type="button" style={self.state.buttonStyles} onClick={self.onUserDesiredTableInputSubmit}> GO</button>
+                    <br></br>
+                    <h5 className="twelve columns" style={{paddingTop: '1em'}}>The following questions will be asked (in random order)</h5>
+                    <ul className="twelve columns">
+                        {questionsList}
+                    </ul>
+                </div>
             </div>
         );
     },
@@ -95,7 +112,7 @@ var MultiplicationHelper = React.createClass({
                     <br></br>
                     <div>
                         <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
-                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.showConfirmationModal}> End</button>
                     </div>
                 </div>
             )
@@ -165,14 +182,7 @@ var MultiplicationHelper = React.createClass({
             if (fromDropdown > toDropdown){
                 return;
             }
-
-            console.log('from: ', fromDropdown);
-            console.log('to: ', toDropdown);
-
-
             var questions = this.getQuestions(fromDropdown, toDropdown);
-
-            console.log(questions);
 
             this.setState({
                 userDesiredTable: (parseInt(event.target.value) + 1),
@@ -209,6 +219,7 @@ var MultiplicationHelper = React.createClass({
     onUserAnswertEnd: function(event){
         this.setState({
             showUserDesiredTable: false,
+            showConfirmationModal: false,
             showQuestion: false,
             showResults: true
         });
@@ -216,6 +227,8 @@ var MultiplicationHelper = React.createClass({
     render: function() {
         return (
             <div >
+                { this.state.showConfirmationModal ? this.getConfirmationModal(): null }
+
                 { this.state.showUserDesiredTable ? this.getUserDesiredTable(): null }
 
                 { this.state.showQuestion ? this.getQuestionPage(): null }
@@ -225,8 +238,6 @@ var MultiplicationHelper = React.createClass({
         );
       }
 });
-
-
 
 ReactDOM.render(
     <MultiplicationHelper/>,
