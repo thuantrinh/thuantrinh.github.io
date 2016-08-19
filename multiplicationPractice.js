@@ -7,7 +7,7 @@ var MultiplicationHelper = React.createClass({
             showUserDesiredTable: true,
             showQuestion: false,
             showResults: false,
-            questions: this.getQuestions(1),
+            questions: this.getQuestions(2, 9),
             answers: [],
             buttonStyles: {
                 fontSize: '2em',
@@ -18,13 +18,64 @@ var MultiplicationHelper = React.createClass({
     },
     getUserDesiredTable: function() {
         const self = this;
+
+        var questionsList = []
+        var questions = self.state.questions;
+
+        for (var questionIndex = 0; questionIndex < questions.length; questionIndex++){
+            var question = questions[questionIndex]
+
+
+            //if (parseInt(answer.userAnswer) !== parseInt(answer.answer)) {
+            //    errorStyle = {paddingLeft: '5%', color: 'red'}
+            //    errorCount++;
+            //} else {
+            //    errorStyle = {paddingLeft: '5%'};
+            //}
+            questionsList.push(<li style={{fontSize: '2em'}} key={questionIndex}> <span style={{paddingLeft: '5%'}}>{question.multiplicand} x {question.multiplier} = {question.answer}</span> </li>)
+        }
+
         return (
             <div>
-                <h4>Which Multiplication Table You Want To Test against?</h4>
-                <h5>Insert a number from 1 - 10 for 2nd grade</h5>
-                <input ref='userDesiredMultiplicationTable' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min="1" max="3"  onChange={self.onUserDesiredTableInputChange} />
+                <h4>GENERATION QUESTIONSs</h4>
+                <h5>Please select a range of times table to generate the multiplication questions</h5>
+                <span>
+                    <h5 className="two columns">From:&nbsp;&nbsp;&nbsp;</h5>
+                    <select ref="fromDropdown" className="three columns" onChange={self.onUserDesiredTableInputChange}>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+
+                    <h5 className="two columns"></h5>
+
+                    <h5 className="two columns">To:</h5>
+                    <select ref="toDropdown" className="three columns" onChange={self.onUserDesiredTableInputChange}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9" selected>9</option>
+                        <option value="10">10</option>
+                    </select>
+                </span>
+                <button className="twelve columns" type="button" style={self.state.buttonStyles} onClick={self.onUserDesiredTableInputSubmit}> GO</button>
                 <br></br>
-                <button  type="button" style={self.state.buttonStyles} onClick={self.onUserDesiredTableInputSubmit}> Submit</button>
+                <h5 className="twelve columns" style={{paddingTop: '1em'}}>The following questions will be asked (in random order)</h5>
+                <ul className="twelve columns">
+                    {questionsList}
+                </ul>
             </div>
         );
     },
@@ -43,8 +94,8 @@ var MultiplicationHelper = React.createClass({
                     <input ref='userAnswerInput' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min='1' max='2' key={new Date().getTime()} />
                     <br></br>
                     <div>
-                        <button className="five columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
-                        <button className="four columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
+                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
+                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertEnd}> End</button>
                     </div>
                 </div>
             )
@@ -90,10 +141,12 @@ var MultiplicationHelper = React.createClass({
             </div>
         );
     },
-    getQuestions: function(input){
+    getQuestions: function(from, to){
         var questions = [];
 
-        for (var multiplicand = 2; multiplicand < input; multiplicand++ ){
+        var realToValue = to + 1;
+
+        for (var multiplicand = from; multiplicand < realToValue; multiplicand++ ){
             for (var multiplier = 1; multiplier < 11; multiplier++){
                 questions.push({
                     multiplicand: multiplicand,
@@ -105,23 +158,34 @@ var MultiplicationHelper = React.createClass({
         return questions;
     },
     onUserDesiredTableInputChange: function(event){
-        var questions = this.getQuestions((parseInt(event.target.value) + 1));
+        var fromDropdown = parseInt(ReactDOM.findDOMNode(this.refs.fromDropdown).value);
+        var toDropdown = parseInt(ReactDOM.findDOMNode(this.refs.toDropdown).value);
 
-        this.setState({
-            userDesiredTable: (parseInt(event.target.value) + 1),
-            questions: questions,
-            totalQustionsCount: questions.length
-        });
-    },
-    onUserDesiredTableInputSubmit: function(){
-        var userDesiredMultiplicationTable = ReactDOM.findDOMNode(this.refs.userDesiredMultiplicationTable).value;
+        if (fromDropdown != null & toDropdown != null){
+            if (fromDropdown > toDropdown){
+                return;
+            }
 
-        if (userDesiredMultiplicationTable !== ''){
+            console.log('from: ', fromDropdown);
+            console.log('to: ', toDropdown);
+
+
+            var questions = this.getQuestions(fromDropdown, toDropdown);
+
+            console.log(questions);
+
             this.setState({
-                showUserDesiredTable: false,
-                showQuestion: true
+                userDesiredTable: (parseInt(event.target.value) + 1),
+                questions: questions,
+                totalQustionsCount: questions.length
             });
         }
+    },
+    onUserDesiredTableInputSubmit: function(){
+        this.setState({
+            showUserDesiredTable: false,
+            showQuestion: true
+        });
     },
     onUserAnswertSubmit: function(extractedQuestion, random, event){
         var currentAnswer = ReactDOM.findDOMNode(this.refs.userAnswerInput).value;
@@ -161,6 +225,8 @@ var MultiplicationHelper = React.createClass({
         );
       }
 });
+
+
 
 ReactDOM.render(
     <MultiplicationHelper/>,
