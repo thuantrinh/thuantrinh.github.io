@@ -4,6 +4,7 @@ var MultiplicationHelper = React.createClass({
             questionCounter: 1,
             totalQustionsCount: 0,
             userDesiredTable: 1,
+            currentQuestionIndex: -1,
             showUserDesiredTable: true,
             showQuestion: false,
             showResults: false,
@@ -99,9 +100,12 @@ var MultiplicationHelper = React.createClass({
 
     getQuestionPage: function() {
         const self = this;
-        var random = Math.floor((Math.random() * this.state.questions.length) + 0);
 
-        var extractedQuestion = this.state.questions[random];
+        if (self.state.currentQuestionIndex === -1){
+             self.state.currentQuestionIndex = Math.floor((Math.random() * this.state.questions.length) + 0);
+        }
+
+        var extractedQuestion = this.state.questions[self.state.currentQuestionIndex];
         var questionBlock;
 
         if (this.state.questions.length > 0){
@@ -111,7 +115,7 @@ var MultiplicationHelper = React.createClass({
                     <input ref='userAnswerInput' pattern="\d*" className="u-full-width" style={{height: '2em',fontSize: '5em'}} type="number" min='1' max='2' key={new Date().getTime()} />
                     <br></br>
                     <div>
-                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, random)}> Answer</button>
+                        <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.onUserAnswertSubmit.bind(this, extractedQuestion, self.state.currentQuestionIndex)}> Answer</button>
                         <button className="twelve columns" style={self.state.buttonStyles} type="button" onClick={self.showConfirmationModal}> End</button>
                     </div>
                 </div>
@@ -153,7 +157,7 @@ var MultiplicationHelper = React.createClass({
 
         return (
             <div>
-                <h4>Results</h4>
+                <h4>Score: {results}%</h4>
                 <ol type="1">{answerList}</ol>
             </div>
         );
@@ -210,6 +214,7 @@ var MultiplicationHelper = React.createClass({
                 answer: extractedQuestion.answer
             })
             this.setState({
+                    currentQuestionIndex: -1,
                     answers: answers,
                     questionCounter: parseInt(this.state.questionCounter) + 1
                 }
